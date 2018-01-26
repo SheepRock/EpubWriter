@@ -362,7 +362,7 @@ namespace EpubWriter
             XElement item =
                 new XElement(opfNamespace + "item",
                     new XAttribute("id", id),
-                    new XAttribute("href", MakeRelative(fileName, ContentFolder)),
+                    new XAttribute("href", fileName),
                     new XAttribute("media-type", $"image/{tp}")
                     );
 
