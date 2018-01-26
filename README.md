@@ -15,10 +15,10 @@ using (Epub epub = new Epub(language, title, author))
   //Adding a chapter to the ebook.
   //Adds to the navigation. Files are displayed in the order they're added
   epub.AddSpine(
-          //Adds the file to the manifest and to the zip package
-					epub.AddTextFile("zipFileName.xhtml", someXhtmlFile, Epub.TextMediaType.Xhtml),
-					"Navigation Title";
-					);
+  	//Adds the file to the manifest and to the zip package
+	epub.AddTextFile("zipFileName.xhtml", someXhtmlFile, Epub.TextMediaType.Xhtml),
+	"Navigation Title";
+	);
   //If our xhtml contains a image, we must added it to the zip package,
   epub.AddImage("Images/myImage.png", File.ReadAllBytes("myImage.png"));
   
