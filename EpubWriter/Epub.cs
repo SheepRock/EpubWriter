@@ -34,7 +34,7 @@ namespace EpubWriter
         private XElement spine;
         private XElement manifest;
         private XElement metadata;
-
+        private XElement currentList = null;
         #endregion //Private variables
 
         #region Enums
@@ -208,6 +208,7 @@ namespace EpubWriter
         /// Add a element to the Spine and to the navigation, given it's id and navigation name
         /// </summary>
         /// <param name="id">Element ID</param>
+        /// <param name="navigationName">Navigation name</param>
         public void AddSpine(string id, string navigationName)
         {
             //Adds the element to the spine
@@ -221,7 +222,32 @@ namespace EpubWriter
             string navPath = (string)manifest
                 .Elements(opfNamespace + "item")
                 .First(x => (string)x.Attribute("id") == id).Attribute("href");
-            nav.AddItem(navPath, navigationName);
+            if (currentList == null)
+                nav.AddItem(navPath, navigationName);
+            else
+                nav.AddItem(navPath, navigationName, currentList);
+        }
+
+        /// <summary>
+        ///  Add a element to the Spine and to the navigation, given it's id and navigation name.
+        ///  The element will be a parent element in the navigation
+        /// </summary>
+        /// <param name="id">Element ID</param>
+        /// <param name="navigationName">Navigation name</param>
+        public void AddSpineParent(string id, string navigationName)
+        {
+            //Adds the element to the spine
+            spine.Add(
+                new XElement(opfNamespace + "itemref",
+                    new XAttribute("idref", id)
+                    )
+                );
+
+            //Adds the element to the navigation
+            string navPath = (string)manifest
+                .Elements(opfNamespace + "item")
+                .First(x => (string)x.Attribute("id") == id).Attribute("href");
+            currentList = nav.AddParentItem(navPath, navigationName);
         }
 
         /// <summary>
@@ -243,7 +269,28 @@ namespace EpubWriter
                 .First(x => (string)x.Attribute("id") == id).Attribute("href");
             nav.AddItem(navPath, Path.GetFileNameWithoutExtension(navPath));
         }
-        
+
+        /// <summary>
+        /// Add a element to the Spine and to the navigation, using the file name as the navigation name.
+        /// The element will be a parent element in the navigation
+        /// </summary>
+        /// <param name="id">Element ID</param>
+        public void AddSpineParent(string id)
+        {
+            //Adds the element to the spine
+            spine.Add(
+                new XElement(opfNamespace + "itemref",
+                    new XAttribute("idref", id)
+                    )
+                );
+
+            //Adds the element to the navigation
+            string navPath = (string)manifest
+                .Elements(opfNamespace + "item")
+                .First(x => (string)x.Attribute("id") == id).Attribute("href");
+            currentList = nav.AddParentItem(navPath, Path.GetFileNameWithoutExtension(navPath));
+        }
+
         /// <summary>
         /// Adds an author to the book with the specified role
         /// </summary>

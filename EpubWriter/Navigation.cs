@@ -111,9 +111,9 @@ namespace EpubWriter
                 new XElement(ns + "li",
                     new XElement(ns + "span",
                         new XAttribute("href", path),
-                        text,
-                        newParent
-                    )
+                        text
+                    ),
+                    newParent
                 )
             );
             return newParent;
@@ -134,9 +134,9 @@ namespace EpubWriter
                 new XElement(ns + "li",
                     new XElement(ns + "span",
                         new XAttribute("href", path),
-                        text,
-                        newParent
-                    )
+                        text
+                    ),
+                    newParent
                 )
             );
             return newParent;
